@@ -2,39 +2,80 @@
 
 ## Objective
 
-Practice basic NLP tasks by preprocessing labelled review sentences, representing text numerically, training a traditional machine-learning classifier, and evaluating its predictions.
+Practice text preprocessing, Bag of Words feature extraction, traditional machine-learning classification, and sentiment-model evaluation.
 
 ## Dataset
 
-The practical uses the UCI Sentiment Labelled Sentences dataset, containing positive and negative sentences from Amazon, IMDb, and Yelp. See the [UCI dataset page](https://archive.ics.uci.edu/dataset/331/sentiment%2Blabelled%2Bsentences) and cite it in any submitted documentation that uses the data.
+The [UCI Sentiment Labelled Sentences dataset](https://archive.ics.uci.edu/dataset/331/sentiment%2Blabelled%2Bsentences) contains 3,000 review sentences from Amazon, IMDb, and Yelp. The data is balanced: 1,500 positive and 1,500 negative sentences. The script downloads the official UCI archive and caches it locally in an ignored `data/` folder.
 
-## Tasks and implementation
+Reference: Kotzias, D. (2015). *Sentiment Labelled Sentences*. UCI Machine Learning Repository. https://doi.org/10.24432/C57604
 
-Complete and document these tasks using your own implementation:
+## Implementation
 
-1. Download and load the dataset.
-2. Convert text to lowercase, remove punctuation and unnecessary characters, normalize whitespace, and create a clean-text column.
-3. Compare original and cleaned text. Show positive and negative examples, find frequent words, and describe differences.
-4. Split the data into training and test sets.
-5. Create a Bag of Words representation.
-6. Train a suitable classifier, such as logistic regression or SVM.
-7. Report accuracy, precision, recall, and F1 score from an actual run.
-8. Test the trained model on a new sentence and record the prediction.
+The solution is in [`sentiment_analysis.py`](sentiment_analysis.py). It performs the following steps:
 
-**Implementation file or notebook:** Add your own completed `.py` file or notebook here. Do not include the AI-generated code example from the preparation chat as your submitted implementation; the brief does not list code generation (A7) as a permitted use for this element. Ask the module leader if you are unsure how to declare the assistance already received.
+1. Loads the three labelled text files from the UCI archive. It joins IMDb sentence continuations where a sentence is split across lines.
+2. Converts text to lowercase, expands common contractions, removes punctuation, and normalizes whitespace.
+3. Saves positive and negative examples showing original and cleaned text, then counts frequent words for each label.
+4. Splits the data into an 80% training set and a 20% test set with stratification and `random_state=42`.
+5. Creates unigram and bigram Bag of Words features with `CountVectorizer`, fitting its vocabulary on training text only.
+6. Trains a logistic regression classifier and evaluates it on the held-out test set.
+7. Predicts the sentiment of a new review sentence.
 
-## Results and evidence
+Run it with:
 
-Add actual outputs from your run, including the evaluation metrics and the new-sentence prediction. Add relevant screenshots or notebook outputs in an `evidence/` folder. Do not enter expected or estimated metrics in place of measured results.
+```text
+pip install -r requirements.txt
+python Lab-01-Machine-Learning/sentiment_analysis.py
+```
+
+## Results
+
+The recorded results use one stratified 80/20 split of the combined dataset.
+
+| Measure | Result |
+|---|---:|
+| Training sentences | 2,400 |
+| Test sentences | 600 |
+| Bag of Words features | 21,149 |
+| Accuracy | 0.8367 |
+| Precision (positive class) | 0.8217 |
+| Recall (positive class) | 0.8600 |
+| F1 score (positive class) | 0.8404 |
+
+### Confusion matrix
+
+| Actual / predicted | Negative | Positive |
+|---|---:|---:|
+| Negative | 244 | 56 |
+| Positive | 42 | 258 |
+
+The model predicted **Positive** for: â€œThe food was delicious and the service was excellent.â€
+
+## Text exploration
+
+Examples in `evidence/preprocessing_examples.csv` show the original and cleaned sentences for both labels. For instance, â€œGood case, Excellent value.â€ becomes â€œgood case excellent valueâ€, while â€œNeedless to say, I wasted my money.â€ becomes â€œneedless to say i wasted my moneyâ€.
+
+The most frequent negative words include `not`, `bad`, and `movie`; frequent positive words include `great`, `good`, and `film`. `not` appears frequently in both classes, showing that word counts alone do not capture context. Words such as `phone`, `movie`, and `food` appear across domains and labels.
+
+## Evidence
+
+- [`run_output.txt`](evidence/run_output.txt): full printed evaluation and classification report.
+- [`model_metrics.csv`](evidence/model_metrics.csv) and [`model_metrics.json`](evidence/model_metrics.json): measured metrics and confusion matrix.
+- [`test_predictions.csv`](evidence/test_predictions.csv): actual and predicted labels for each test example.
+- [`preprocessing_examples.csv`](evidence/preprocessing_examples.csv): original and cleaned examples from both classes.
+- [`frequent_words.csv`](evidence/frequent_words.csv): word counts by sentiment.
+- [`confusion_matrix.svg`](evidence/confusion_matrix.svg) and [`frequent_words.svg`](evidence/frequent_words.svg): generated result charts.
+
+![Confusion matrix](evidence/confusion_matrix.svg)
+
+![Frequent words by sentiment](evidence/frequent_words.svg)
 
 ## Observations
 
-Record what you observed in the positive and negative examples and frequent-word lists. Note any issues encountered and how you resolved them.
+The positive-class recall (0.86) is higher than the negative-class recall (0.81). The test set contains 56 false positives and 42 false negatives. The dataset is balanced, and the result reflects one hold-out split rather than repeated cross-validation. The frequent-word comparison also shows why a word's context matters: `not` occurs in both positive and negative sentences.
 
 ## Learning outcomes
 
-Summarize what you learned about text preprocessing, Bag of Words, train/test splitting, classification, and evaluation after completing the practical yourself.
+This practical demonstrates how text cleaning and n-gram Bag of Words features turn sentences into model inputs. It also shows why fitting the vocabulary on training data only avoids test-set leakage, and why accuracy, precision, recall, F1, and a confusion matrix provide different views of model performance.
 
-## AI use
-
-Record permitted AI assistance here and in the required declaration. The assessment brief specifies that AI use must be declared and that a signed Generative AI Declaration must accompany the assessment submission. This portfolio draft records that an AI-generated code example was produced during preparation; the code itself is not included.
