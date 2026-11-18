@@ -1,0 +1,23 @@
+Dataset rows: 3000
+Label counts: negative=1500, positive=1500
+Train/test rows: 2400/600
+Bag of Words features: 21149
+Model: LogisticRegression
+Accuracy: 0.8367
+Precision: 0.8217
+Recall: 0.8600
+F1 score: 0.8404
+Confusion matrix [[TN, FP], [FN, TP]]: [[244, 56], [42, 258]]
+New sentence: The food was delicious and the service was excellent.
+Prediction: Positive
+
+Classification report:
+              precision    recall  f1-score   support
+
+    Negative       0.85      0.81      0.83       300
+    Positive       0.82      0.86      0.84       300
+
+    accuracy                           0.84       600
+   macro avg       0.84      0.84      0.84       600
+weighted avg       0.84      0.84      0.84       600
+
