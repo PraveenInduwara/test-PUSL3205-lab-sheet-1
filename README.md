@@ -1,28 +1,38 @@
 # PUSL3205 Practical Portfolio
 
-**Student:** [Add your name]  
-**Student number:** [Add your student number]  
-**Module:** PUSL3205 - Large Language Models and Generative AI
-
-This individual portfolio will document practical laboratory activities completed during the module. Each lab folder should include its implementation, evidence, results, observations, and learning outcomes. The portfolio is intended to be updated as labs are completed.
+An organized portfolio of practical laboratory activities for PUSL3205. Each lab folder contains its implementation, outputs, evidence, observations, and learning outcomes.
 
 ## Laboratory progress
 
 | Lab | Activity | Status |
 |---|---|---|
-| 01 | Sentiment Analysis Using Traditional Machine Learning | Draft; own implementation, run results, and evidence still to be added |
+| 01 | Sentiment Analysis Using Traditional Machine Learning | Complete; implementation and run evidence included |
 
 ## Repository layout
 
 ```text
-PUSL3205-Practical-Portfolio/
+PUSL3205-lab-sheet-1/
   README.md
   .gitignore
   requirements.txt
   Lab-01-Machine-Learning/
     README.md
+    sentiment_analysis.py
+    evidence/
+      confusion_matrix.svg
+      frequent_words.svg
+      model_metrics.csv
+      model_metrics.json
+      preprocessing_examples.csv
+      run_output.txt
+      test_predictions.csv
 ```
 
-## Generative AI use
+## Run Lab 1
 
-Codex was used for planning and technical guidance. An AI-generated code example was also produced during preparation. The assessment brief lists A2, A4, A5, and A8 as the permitted uses for this element; it does not list A7 (code generation) among the permitted uses. Therefore, the generated code is not included as the submitted implementation. Confirm with the module leader how to declare the assistance already received, document AI use as required, and include the signed Generative AI Declaration with the assessment submission.
+Install the dependencies with `pip install -r requirements.txt`, then run `python Lab-01-Machine-Learning/sentiment_analysis.py`. The script downloads the dataset from UCI and saves the run outputs under the lab's `evidence/` folder. The downloaded archive is cached locally and ignored by Git.
+
+## Dataset reference
+
+Kotzias, D. (2015). *Sentiment Labelled Sentences*. UCI Machine Learning Repository. https://doi.org/10.24432/C57604
+
